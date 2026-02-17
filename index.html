@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Menu Digital - L'Adresse Lyon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --gold-primary: #c5a059;
+            --gold-light: #f1d592;
+            --brand-black: #1a1a1a;
+            --bg-cream: #fcfcf7;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-cream);
+            color: var(--brand-black);
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Effet de brillance métallique optimisé */
+        .bg-shiny-gold {
+            background: linear-gradient(
+                135deg, 
+                #b38728 0%, 
+                #fbf5b7 25%, 
+                #aa771c 50%, 
+                #fcf6ba 75%, 
+                #b38728 100%
+            );
+            background-size: 200% 200%;
+            animation: shine 8s ease infinite;
+        }
+
+        @keyframes shine {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Onglets tactiles */
+        .category-tab {
+            color: #999;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.05em;
+            padding: 12px 16px;
+            position: relative;
+        }
+
+        .category-tab.active {
+            color: var(--gold-primary);
+            font-weight: 900;
+        }
+
+        .category-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 15%;
+            width: 70%;
+            height: 3px;
+            background: var(--gold-primary);
+            border-radius: 2px;
+        }
+
+        .menu-item {
+            border-bottom: 1px solid rgba(197, 160, 89, 0.15);
+            padding: 1.25rem 0;
+        }
+
+        .price-tag {
+            font-weight: 900;
+            color: var(--brand-black);
+            font-size: 1.05rem;
+            white-space: nowrap;
+        }
+
+        .section-title {
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 900;
+            font-size: 1.4rem;
+            color: var(--gold-primary);
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+
+        .pill-border {
+            border: 1.5px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .sticky-nav {
+            backdrop-filter: blur(12px);
+            background-color: rgba(255, 255, 255, 0.85);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* Modal Mobile */
+        #qr-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+
+        #qr-container {
+            background: white;
+            padding: 24px;
+            border-radius: 20px;
+            text-align: center;
+            width: 90%;
+            max-width: 320px;
+            border: 3px solid var(--gold-primary);
+        }
+
+        #qrcode canvas, #qrcode img {
+            margin: 0 auto;
+            max-width: 100% !important;
+            height: auto !important;
+        }
+
+        /* Ajustements petits écrans */
+        @media (max-width: 375px) {
+            h1 { font-size: 2.8rem !important; }
+            .category-tab { font-size: 11px; padding: 10px 12px; }
+        }
+    </style>
+</head>
+<body class="pb-16">
+
+    <!-- Barre admin mobile -->
+    <div id="admin-bar" class="bg-black text-white text-[9px] py-1.5 px-4 flex justify-between items-center font-bold tracking-widest hidden">
+        <span>MENU ADMIN</span>
+        <button onclick="showQRCode()" class="bg-gold-primary text-black px-3 py-1 rounded-full flex items-center gap-1.5 active:scale-95 transition-transform">
+            <i data-lucide="qr-code" class="w-3 h-3"></i> QR CODE
+        </button>
+    </div>
+
+    <!-- Header Mobile Optimized -->
+    <header class="bg-shiny-gold text-white pt-16 pb-14 px-4 text-center shadow-lg relative overflow-hidden">
+        <div class="absolute inset-0 bg-black/5 pointer-events-none"></div>
+        
+        <div class="relative z-10 w-full">
+            <h1 class="text-5xl font-serif tracking-[0.15em] uppercase mb-8 drop-shadow-xl">
+                L'ADRESSE
+            </h1>
+            
+            <div class="mb-10">
+                <div class="pill-border">
+                    <p class="text-[10px] tracking-[0.4em] uppercase font-black text-white">
+                        RESTAURANT <span class="mx-2 opacity-50">•</span> BAR FESTIF
+                    </p>
+                </div>
+            </div>
+            
+            <div class="flex items-center justify-center text-[10px] space-x-2 tracking-[0.2em] uppercase font-black text-white opacity-90">
+                <i data-lucide="map-pin" class="w-3.5 h-3.5 text-white"></i>
+                <span>41 QUAI DE PIERRE-SCIZE, LYON</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tactile -->
+    <nav class="sticky top-0 z-50 sticky-nav">
+        <div class="flex overflow-x-auto no-scrollbar justify-center">
+            <button onclick="switchTab('cuisine')" id="tab-cuisine" class="category-tab active whitespace-nowrap uppercase">La Carte</button>
+            <button onclick="switchTab('bar')" id="tab-bar" class="category-tab whitespace-nowrap uppercase">Le Bar</button>
+            <button onclick="switchTab('vins')" id="tab-vins" class="category-tab whitespace-nowrap uppercase">Vins & Bulles</button>
+        </div>
+    </nav>
+
+    <main class="max-w-xl mx-auto px-5 pt-8">
+        
+        <!-- SECTION CUISINE -->
+        <section id="content-cuisine" class="tab-content animate-in fade-in duration-300">
+            <div class="mb-14">
+                <div class="text-center"><h2 class="section-title">Les Entrées</h2></div>
+                <div class="space-y-1">
+                    <div class="menu-item flex justify-between items-start gap-3">
+                        <div class="flex-1">
+                            <h3 class="font-black uppercase text-[13px] mb-0.5">Salade lyonnaise revisitée</h3>
+                            <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Œuf mollet, lard paysan, croûtons dorés</p>
+                        </div>
+                        <span class="price-tag">11,90 €</span>
+                    </div>
+                    <div class="menu-item flex justify-between items-start gap-3">
+                        <div class="flex-1">
+                            <h3 class="font-black uppercase text-[13px] mb-0.5">Tartare de saumon</h3>
+                            <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Frites et salade verte croquante</p>
+                        </div>
+                        <span class="price-tag">14,50 €</span>
+                    </div>
+                    <div class="menu-item flex justify-between items-start gap-3">
+                        <div class="flex-1">
+                            <h3 class="font-black uppercase text-[13px] mb-0.5">Chèvre rôti</h3>
+                            <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Pain de campagne, miel, noix, raisins</p>
+                        </div>
+                        <span class="price-tag">12,90 €</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-14">
+                <div class="text-center"><h2 class="section-title">Les Plats</h2></div>
+                <div class="space-y-4">
+                    <div class="p-5 border-2 border-gold-primary rounded-xl bg-white shadow-md relative overflow-hidden mb-6">
+                        <div class="absolute top-0 right-0 p-1 bg-gold-primary text-[8px] text-white uppercase font-black px-3 rounded-bl-lg">Signature</div>
+                        <div class="flex justify-between items-start mb-2 pr-4">
+                            <h3 class="font-black uppercase tracking-tight text-base leading-tight">Côte de bœuf (1,2kg)</h3>
+                            <span class="font-black text-base text-gold-primary">75,90 €</span>
+                        </div>
+                        <p class="text-[10px] text-gray-500 leading-relaxed font-bold uppercase italic">À partager (2 pers). Origine France, frites maison, salade, béarnaise, fromage.</p>
+                    </div>
+                    
+                    <div class="menu-item flex justify-between items-start gap-3">
+                        <div class="flex-1">
+                            <h3 class="font-black uppercase text-[13px] mb-0.5">Entrecôte marinée 250g</h3>
+                            <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Poivre ou fromage, gratin dauphinois</p>
+                        </div>
+                        <span class="price-tag">23,90 €</span>
+                    </div>
+                    <div class="menu-item flex justify-between items-start gap-3">
+                        <div class="flex-1">
+                            <h3 class="font-black uppercase text-[13px] mb-0.5">Escalope milanaise</h3>
+                            <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Pâtes fraîches, sauce tomate basilic</p>
+                        </div>
+                        <span class="price-tag">19,90 €</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <div class="text-center"><h2 class="section-title">Desserts</h2></div>
+                <div class="grid gap-4">
+                    <div class="flex justify-between items-center border-b border-dashed border-gray-200 pb-3">
+                        <h3 class="font-black uppercase text-[13px]">Tarte praline maison</h3>
+                        <span class="price-tag">6,50 €</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-gold-primary/10 p-4 border-l-4 border-gold-primary rounded-r-lg">
+                        <div>
+                            <h3 class="font-black uppercase text-[13px] mb-0.5">Café Gourmand</h3>
+                            <p class="text-[10px] text-gray-600 font-bold uppercase italic">3 mini-desserts + café/thé</p>
+                        </div>
+                        <span class="price-tag">8,50 €</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION BAR -->
+        <section id="content-bar" class="tab-content hidden animate-in fade-in duration-300">
+            <div class="mb-12">
+                <div class="text-center"><h2 class="section-title">Cocktails</h2></div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-white p-4 border border-gold-primary/20 text-center rounded-xl shadow-sm active:bg-gray-50">
+                        <div class="text-[9px] uppercase font-black text-gray-400 mb-1">Mojito</div>
+                        <div class="font-black text-base">11 €</div>
+                    </div>
+                    <div class="bg-white p-4 border border-gold-primary/20 text-center rounded-xl shadow-sm active:bg-gray-50">
+                        <div class="text-[9px] uppercase font-black text-gray-400 mb-1">Spritz</div>
+                        <div class="font-black text-base">11 €</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-12">
+                <div class="text-center"><h2 class="section-title">Apéritifs</h2></div>
+                <div class="space-y-4 font-bold uppercase text-[11px] px-2">
+                    <div class="flex justify-between border-b pb-2"><span>Ricard / 51</span> <span>4 €</span></div>
+                    <div class="flex justify-between border-b pb-2"><span>Martini</span> <span>4 €</span></div>
+                    <div class="flex justify-between border-b pb-2 text-gold-primary"><span>Piscine Rosé</span> <span>7 €</span></div>
+                </div>
+            </div>
+
+            <div class="mb-12">
+                <div class="text-center"><h2 class="section-title">Spiritueux</h2></div>
+                <div class="space-y-4 font-bold uppercase text-[11px] px-2">
+                    <div class="flex justify-between border-b pb-2 font-black text-gold-primary"><span>Jack Daniel's</span> <span>14 €</span></div>
+                    <div class="flex justify-between border-b pb-2"><span>Digestifs</span> <span>10 €</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION VINS -->
+        <section id="content-vins" class="tab-content hidden animate-in fade-in duration-300">
+            <div class="mb-14">
+                <div class="text-center"><h2 class="section-title">Au Verre</h2></div>
+                <div class="space-y-5 font-black uppercase text-[12px] px-2">
+                    <div class="flex justify-between border-b pb-3"><span>Blanc / Rosé</span> <span>5 €</span></div>
+                    <div class="flex justify-between border-b pb-3 text-gold-primary"><span>Sélection Rouge</span> <span>6 €</span></div>
+                </div>
+            </div>
+
+            <div class="mb-10">
+                <div class="text-center"><h2 class="section-title">Prestige</h2></div>
+                <div class="p-8 border-2 border-gold-primary bg-white shadow-xl rounded-2xl text-center">
+                    <div class="text-[10px] uppercase font-black tracking-widest text-gold-primary mb-2 opacity-70">Champagne</div>
+                    <h4 class="font-black uppercase text-base mb-4 leading-tight">Laurent-Perrier Rosé</h4>
+                    <div class="text-2xl font-black text-gold-primary">120 €</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal QR Code -->
+    <div id="qr-modal" onclick="closeQRCode()">
+        <div id="qr-container" onclick="event.stopPropagation()">
+            <h3 class="font-black uppercase text-base mb-2 text-gold-primary">MENU QR CODE</h3>
+            <p class="text-[9px] text-gray-500 font-bold mb-6 uppercase tracking-widest leading-relaxed">
+                Scannez pour accéder au menu
+            </p>
+            <div id="qrcode"></div>
+            <p class="mt-6 text-[9px] text-gray-300 uppercase font-black">Appuyez pour fermer</p>
+        </div>
+    </div>
+
+    <!-- Bouton Retour Haut Mobile -->
+    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="fixed bottom-5 right-5 w-11 h-11 bg-gold-primary text-white rounded-full shadow-lg flex items-center justify-center z-40 active:scale-90 transition-transform">
+        <i data-lucide="chevron-up" class="w-6 h-6"></i>
+    </button>
+
+    <script>
+        lucide.createIcons();
+
+        // Affichage admin si ?admin=true
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            if(params.get('admin') === 'true') {
+                document.getElementById('admin-bar').classList.remove('hidden');
+                document.getElementById('admin-bar').classList.add('flex');
+            }
+        };
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('content-' + tabId).classList.remove('hidden');
+            document.getElementById('tab-' + tabId).classList.add('active');
+            
+            // Scroll au début du menu après le header
+            window.scrollTo({ top: document.querySelector('nav').offsetTop - 10, behavior: 'smooth' });
+        }
+
+        function showQRCode() {
+            const modal = document.getElementById('qr-modal');
+            const qrDiv = document.getElementById('qrcode');
+            qrDiv.innerHTML = "";
+            
+            // Lien vers la version client pure
+            const currentUrl = window.location.href.split('?')[0];
+            
+            new QRCode(qrDiv, {
+                text: currentUrl,
+                width: 220,
+                height: 220,
+                colorDark : "#1a1a1a",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+            modal.style.display = 'flex';
+        }
+
+        function closeQRCode() {
+            document.getElementById('qr-modal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
+

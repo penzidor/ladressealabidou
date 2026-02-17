@@ -29,7 +29,7 @@
             font-family: 'Playfair Display', serif;
         }
 
-        /* Effet de brillance métallique optimisé */
+        /* Effet brillant doré métallique */
         .bg-shiny-gold {
             background: linear-gradient(
                 135deg, 
@@ -49,7 +49,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Onglets tactiles */
         .category-tab {
             color: #999;
             transition: all 0.3s ease;
@@ -78,7 +77,7 @@
 
         .menu-item {
             border-bottom: 1px solid rgba(197, 160, 89, 0.15);
-            padding: 1.25rem 0;
+            padding: 1rem 0;
         }
 
         .price-tag {
@@ -88,14 +87,21 @@
             white-space: nowrap;
         }
 
+        .section-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            margin-top: 2rem;
+        }
+
         .section-title {
             letter-spacing: 0.15em;
             text-transform: uppercase;
             font-weight: 900;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             color: var(--gold-primary);
-            margin-bottom: 1.5rem;
             display: inline-block;
+            border-bottom: 2px solid var(--gold-primary);
+            padding-bottom: 4px;
         }
 
         .pill-border {
@@ -111,11 +117,10 @@
 
         .sticky-nav {
             backdrop-filter: blur(12px);
-            background-color: rgba(255, 255, 255, 0.85);
+            background-color: rgba(255, 255, 255, 0.9);
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-        /* Modal Mobile */
         #qr-modal {
             display: none;
             position: fixed;
@@ -137,22 +142,22 @@
             border: 3px solid var(--gold-primary);
         }
 
-        #qrcode canvas, #qrcode img {
-            margin: 0 auto;
-            max-width: 100% !important;
-            height: auto !important;
-        }
-
-        /* Ajustements petits écrans */
-        @media (max-width: 375px) {
-            h1 { font-size: 2.8rem !important; }
-            .category-tab { font-size: 11px; padding: 10px 12px; }
+        .sub-category-title {
+            font-weight: 800;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #888;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid var(--gold-primary);
+            padding-left: 8px;
         }
     </style>
 </head>
 <body class="pb-16">
 
-    <!-- Barre admin mobile -->
+    <!-- Barre admin masquée (?admin=true) -->
     <div id="admin-bar" class="bg-black text-white text-[9px] py-1.5 px-4 flex justify-between items-center font-bold tracking-widest hidden">
         <span>MENU ADMIN</span>
         <button onclick="showQRCode()" class="bg-gold-primary text-black px-3 py-1 rounded-full flex items-center gap-1.5 active:scale-95 transition-transform">
@@ -160,23 +165,16 @@
         </button>
     </div>
 
-    <!-- Header Mobile Optimized -->
+    <!-- Header -->
     <header class="bg-shiny-gold text-white pt-16 pb-14 px-4 text-center shadow-lg relative overflow-hidden">
         <div class="absolute inset-0 bg-black/5 pointer-events-none"></div>
-        
         <div class="relative z-10 w-full">
-            <h1 class="text-5xl font-serif tracking-[0.15em] uppercase mb-8 drop-shadow-xl">
-                L'ADRESSE
-            </h1>
-            
+            <h1 class="text-5xl font-serif tracking-[0.15em] uppercase mb-8 drop-shadow-xl">L'ADRESSE</h1>
             <div class="mb-10">
                 <div class="pill-border">
-                    <p class="text-[10px] tracking-[0.4em] uppercase font-black text-white">
-                        RESTAURANT <span class="mx-2 opacity-50">•</span> BAR FESTIF
-                    </p>
+                    <p class="text-[10px] tracking-[0.4em] uppercase font-black text-white">RESTAURANT <span class="mx-2 opacity-50">•</span> BAR FESTIF</p>
                 </div>
             </div>
-            
             <div class="flex items-center justify-center text-[10px] space-x-2 tracking-[0.2em] uppercase font-black text-white opacity-90">
                 <i data-lucide="map-pin" class="w-3.5 h-3.5 text-white"></i>
                 <span>41 QUAI DE PIERRE-SCIZE, LYON</span>
@@ -184,7 +182,7 @@
         </div>
     </header>
 
-    <!-- Navigation Tactile -->
+    <!-- Navigation -->
     <nav class="sticky top-0 z-50 sticky-nav">
         <div class="flex overflow-x-auto no-scrollbar justify-center">
             <button onclick="switchTab('cuisine')" id="tab-cuisine" class="category-tab active whitespace-nowrap uppercase">La Carte</button>
@@ -193,135 +191,263 @@
         </div>
     </nav>
 
-    <main class="max-w-xl mx-auto px-5 pt-8">
+    <main class="max-w-xl mx-auto px-5 pt-4">
         
         <!-- SECTION CUISINE -->
         <section id="content-cuisine" class="tab-content animate-in fade-in duration-300">
-            <div class="mb-14">
-                <div class="text-center"><h2 class="section-title">Les Entrées</h2></div>
-                <div class="space-y-1">
-                    <div class="menu-item flex justify-between items-start gap-3">
-                        <div class="flex-1">
-                            <h3 class="font-black uppercase text-[13px] mb-0.5">Salade lyonnaise revisitée</h3>
-                            <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Œuf mollet, lard paysan, croûtons dorés</p>
-                        </div>
-                        <span class="price-tag">11,90 €</span>
+            <!-- Entrées -->
+            <div class="section-header"><h2 class="section-title">Les Entrées</h2></div>
+            <div class="space-y-1">
+                <div class="menu-item flex justify-between items-start gap-3">
+                    <div class="flex-1">
+                        <h3 class="font-black uppercase text-[13px] mb-0.5">Salade lyonnaise revisitée</h3>
+                        <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Œuf mollet, lard paysan croustillant, croûtons dorés</p>
                     </div>
-                    <div class="menu-item flex justify-between items-start gap-3">
-                        <div class="flex-1">
-                            <h3 class="font-black uppercase text-[13px] mb-0.5">Tartare de saumon</h3>
-                            <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Frites et salade verte croquante</p>
-                        </div>
-                        <span class="price-tag">14,50 €</span>
+                    <span class="price-tag">11,90 €</span>
+                </div>
+                <div class="menu-item flex justify-between items-start gap-3">
+                    <div class="flex-1">
+                        <h3 class="font-black uppercase text-[13px] mb-0.5">Salade de volaille aux épices</h3>
+                        <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Filet de poulet mariné aux épices orientales</p>
                     </div>
-                    <div class="menu-item flex justify-between items-start gap-3">
-                        <div class="flex-1">
-                            <h3 class="font-black uppercase text-[13px] mb-0.5">Chèvre rôti</h3>
-                            <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Pain de campagne, miel, noix, raisins</p>
-                        </div>
-                        <span class="price-tag">12,90 €</span>
+                    <span class="price-tag">12,90 €</span>
+                </div>
+                <div class="menu-item flex justify-between items-start gap-3">
+                    <div class="flex-1">
+                        <h3 class="font-black uppercase text-[13px] mb-0.5">Chèvre rôti</h3>
+                        <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Pain de campagne, chèvre miel de fleurs, noix, raisins</p>
                     </div>
+                    <span class="price-tag">12,90 €</span>
+                </div>
+                <div class="menu-item flex justify-between items-start gap-3">
+                    <div class="flex-1">
+                        <h3 class="font-black uppercase text-[13px] mb-0.5">Salade grecque feta AOP light</h3>
+                        <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Tomates, concombre, Kalamata, oignons rouges, huile d'olive</p>
+                    </div>
+                    <span class="price-tag">12,90 €</span>
+                </div>
+                <div class="menu-item flex justify-between items-start gap-3">
+                    <div class="flex-1">
+                        <h3 class="font-black uppercase text-[13px] mb-0.5">Plateau de charcuterie</h3>
+                        <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Gourmand, à partager</p>
+                    </div>
+                    <span class="price-tag">15 €</span>
+                </div>
+                <div class="menu-item flex justify-between items-start gap-3">
+                    <div class="flex-1">
+                        <h3 class="font-black uppercase text-[13px] mb-0.5">Tartare de saumon</h3>
+                        <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Frites, salade verte croquante</p>
+                    </div>
+                    <span class="price-tag">14,50 €</span>
                 </div>
             </div>
 
-            <div class="mb-14">
-                <div class="text-center"><h2 class="section-title">Les Plats</h2></div>
-                <div class="space-y-4">
-                    <div class="p-5 border-2 border-gold-primary rounded-xl bg-white shadow-md relative overflow-hidden mb-6">
-                        <div class="absolute top-0 right-0 p-1 bg-gold-primary text-[8px] text-white uppercase font-black px-3 rounded-bl-lg">Signature</div>
-                        <div class="flex justify-between items-start mb-2 pr-4">
-                            <h3 class="font-black uppercase tracking-tight text-base leading-tight">Côte de bœuf (1,2kg)</h3>
-                            <span class="font-black text-base text-gold-primary">75,90 €</span>
-                        </div>
-                        <p class="text-[10px] text-gray-500 leading-relaxed font-bold uppercase italic">À partager (2 pers). Origine France, frites maison, salade, béarnaise, fromage.</p>
+            <!-- Plats -->
+            <div class="section-header"><h2 class="section-title">Les Plats</h2></div>
+            <div class="space-y-4">
+                <div class="p-5 border-2 border-gold-primary rounded-xl bg-white shadow-md relative overflow-hidden mb-6">
+                    <div class="absolute top-0 right-0 p-1 bg-gold-primary text-[8px] text-white uppercase font-black px-3 rounded-bl-lg">Signature</div>
+                    <div class="flex justify-between items-start mb-2 pr-4">
+                        <h3 class="font-black uppercase tracking-tight text-base leading-tight">Côte de bœuf (1,2kg)</h3>
+                        <span class="font-black text-base text-gold-primary">75,90 €</span>
                     </div>
-                    
-                    <div class="menu-item flex justify-between items-start gap-3">
-                        <div class="flex-1">
-                            <h3 class="font-black uppercase text-[13px] mb-0.5">Entrecôte marinée 250g</h3>
-                            <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Poivre ou fromage, gratin dauphinois</p>
-                        </div>
-                        <span class="price-tag">23,90 €</span>
+                    <p class="text-[10px] text-gray-500 leading-relaxed font-bold uppercase italic">À partager (2 pers). Origine France, grillée, sauce au choix, frites maison, salade, béarnaise, fromage.</p>
+                </div>
+                <div class="menu-item flex justify-between items-start gap-3">
+                    <div class="flex-1">
+                        <h3 class="font-black uppercase text-[13px] mb-0.5">Entrecôte marinée 250g</h3>
+                        <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Au poivre ou fromage maison, gratin dauphinois ou légumes</p>
                     </div>
-                    <div class="menu-item flex justify-between items-start gap-3">
-                        <div class="flex-1">
-                            <h3 class="font-black uppercase text-[13px] mb-0.5">Escalope milanaise</h3>
-                            <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Pâtes fraîches, sauce tomate basilic</p>
-                        </div>
-                        <span class="price-tag">19,90 €</span>
+                    <span class="price-tag">23,90 €</span>
+                </div>
+                <div class="menu-item flex justify-between items-start gap-3">
+                    <div class="flex-1">
+                        <h3 class="font-black uppercase text-[13px] mb-0.5">Escalope milanaise</h3>
+                        <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Croustillante, panée à l'italienne, pâtes fraîches, tomate basilic</p>
                     </div>
+                    <span class="price-tag">19,90 €</span>
+                </div>
+                <div class="menu-item flex justify-between items-start gap-3">
+                    <div class="flex-1">
+                        <h3 class="font-black uppercase text-[13px] mb-0.5">Tartare de bœuf au couteau</h3>
+                        <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Classique français, frites maison, salade verte croquante</p>
+                    </div>
+                    <span class="price-tag">17,90 €</span>
+                </div>
+                <div class="menu-item flex justify-between items-start gap-3">
+                    <div class="flex-1">
+                        <h3 class="font-black uppercase text-[13px] mb-0.5">Pavé de saumon rôti</h3>
+                        <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Sauce tomate basilic, riz basmati</p>
+                    </div>
+                    <span class="price-tag">19,90 €</span>
+                </div>
+                <div class="menu-item flex justify-between items-start gap-3">
+                    <div class="flex-1">
+                        <h3 class="font-black uppercase text-[13px] mb-0.5">Émincé de volaille fermière</h3>
+                        <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Sauce au choix (fromage/poivre), riz basmati</p>
+                    </div>
+                    <span class="price-tag">17,90 €</span>
                 </div>
             </div>
 
-            <div class="mb-8">
-                <div class="text-center"><h2 class="section-title">Desserts</h2></div>
-                <div class="grid gap-4">
-                    <div class="flex justify-between items-center border-b border-dashed border-gray-200 pb-3">
-                        <h3 class="font-black uppercase text-[13px]">Tarte praline maison</h3>
-                        <span class="price-tag">6,50 €</span>
+            <!-- Desserts -->
+            <div class="section-header"><h2 class="section-title">Les Desserts</h2></div>
+            <div class="space-y-1">
+                <div class="menu-item flex justify-between items-start gap-3">
+                    <div class="flex-1">
+                        <h3 class="font-black uppercase text-[13px] mb-0.5">Profiteroles XXL</h3>
+                        <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Glace vanille, chocolat chaud maison, chantilly</p>
                     </div>
-                    <div class="flex justify-between items-center bg-gold-primary/10 p-4 border-l-4 border-gold-primary rounded-r-lg">
-                        <div>
-                            <h3 class="font-black uppercase text-[13px] mb-0.5">Café Gourmand</h3>
-                            <p class="text-[10px] text-gray-600 font-bold uppercase italic">3 mini-desserts + café/thé</p>
-                        </div>
-                        <span class="price-tag">8,50 €</span>
+                    <span class="price-tag">9,50 €</span>
+                </div>
+                <div class="menu-item flex justify-between items-start gap-3">
+                    <div class="flex-1">
+                        <h3 class="font-black uppercase text-[13px] mb-0.5">Colonel version fraîcheur</h3>
+                        <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Sorbet citron, vodka infusée basilic ou menthe</p>
                     </div>
+                    <span class="price-tag">9,50 €</span>
+                </div>
+                <div class="menu-item flex justify-between items-start gap-3">
+                    <div class="flex-1">
+                        <h3 class="font-black uppercase text-[13px] mb-0.5">Tarte praline maison</h3>
+                        <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Pâte sablée, pralines roses croquantes, crème légère</p>
+                    </div>
+                    <span class="price-tag">6,50 €</span>
+                </div>
+                <div class="menu-item flex justify-between items-start gap-3">
+                    <div class="flex-1">
+                        <h3 class="font-black uppercase text-[13px] mb-0.5">Fondant au chocolat</h3>
+                        <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Glace vanille ou crème anglaise, chantilly</p>
+                    </div>
+                    <span class="price-tag">6,50 €</span>
+                </div>
+                <div class="menu-item flex justify-between items-start gap-3">
+                    <div class="flex-1">
+                        <h3 class="font-black uppercase text-[13px] mb-0.5">Tarte citron revisitée</h3>
+                        <p class="text-[11px] text-gray-600 font-bold uppercase italic leading-snug">Maison, crème anglaise, chantilly</p>
+                    </div>
+                    <span class="price-tag">6,50 €</span>
+                </div>
+                <div class="menu-item flex justify-between items-center bg-gold-primary/10 p-4 border-l-4 border-gold-primary rounded-r-lg mt-4">
+                    <div class="flex-1">
+                        <h3 class="font-black uppercase text-[13px] mb-0.5">Café Gourmand</h3>
+                        <p class="text-[10px] text-gray-600 font-bold uppercase italic">3 mini-desserts maison + café ou thé</p>
+                    </div>
+                    <span class="price-tag">8,50 €</span>
                 </div>
             </div>
         </section>
 
         <!-- SECTION BAR -->
         <section id="content-bar" class="tab-content hidden animate-in fade-in duration-300">
-            <div class="mb-12">
-                <div class="text-center"><h2 class="section-title">Cocktails</h2></div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-white p-4 border border-gold-primary/20 text-center rounded-xl shadow-sm active:bg-gray-50">
-                        <div class="text-[9px] uppercase font-black text-gray-400 mb-1">Mojito</div>
-                        <div class="font-black text-base">11 €</div>
-                    </div>
-                    <div class="bg-white p-4 border border-gold-primary/20 text-center rounded-xl shadow-sm active:bg-gray-50">
-                        <div class="text-[9px] uppercase font-black text-gray-400 mb-1">Spritz</div>
-                        <div class="font-black text-base">11 €</div>
-                    </div>
+            <!-- Cocktails -->
+            <div class="section-header"><h2 class="section-title">Cocktails</h2></div>
+            <div class="grid grid-cols-2 gap-3 mb-8">
+                <div class="bg-white p-4 border border-gold-primary/20 text-center rounded-xl shadow-sm">
+                    <div class="text-[9px] uppercase font-black text-gray-400 mb-1">Mojito</div>
+                    <div class="font-black text-base text-gold-primary">11 €</div>
+                </div>
+                <div class="bg-white p-4 border border-gold-primary/20 text-center rounded-xl shadow-sm">
+                    <div class="text-[9px] uppercase font-black text-gray-400 mb-1">Cosmopolitan</div>
+                    <div class="font-black text-base text-gold-primary">12 €</div>
+                </div>
+                <div class="bg-white p-4 border border-gold-primary/20 text-center rounded-xl shadow-sm">
+                    <div class="text-[9px] uppercase font-black text-gray-400 mb-1">Spritz</div>
+                    <div class="font-black text-base text-gold-primary">11 €</div>
+                </div>
+                <div class="bg-white p-4 border border-gold-primary/20 text-center rounded-xl shadow-sm">
+                    <div class="text-[9px] uppercase font-black text-gray-400 mb-1">St-Germain</div>
+                    <div class="font-black text-base text-gold-primary">12 €</div>
                 </div>
             </div>
 
-            <div class="mb-12">
-                <div class="text-center"><h2 class="section-title">Apéritifs</h2></div>
-                <div class="space-y-4 font-bold uppercase text-[11px] px-2">
-                    <div class="flex justify-between border-b pb-2"><span>Ricard / 51</span> <span>4 €</span></div>
-                    <div class="flex justify-between border-b pb-2"><span>Martini</span> <span>4 €</span></div>
-                    <div class="flex justify-between border-b pb-2 text-gold-primary"><span>Piscine Rosé</span> <span>7 €</span></div>
-                </div>
+            <!-- Apéritifs -->
+            <div class="sub-category-title">Apéritifs</div>
+            <div class="space-y-3 px-2">
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px]"><span>Ricard ou 51</span> <span>4 €</span></div>
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px]"><span>Martini (Blanc/Rouge)</span> <span>4 €</span></div>
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px]"><span>Suze</span> <span>5 €</span></div>
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px]"><span>Picon</span> <span>7 €</span></div>
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px] text-gold-primary"><span>Piscine de rosé</span> <span>7 €</span></div>
             </div>
 
-            <div class="mb-12">
-                <div class="text-center"><h2 class="section-title">Spiritueux</h2></div>
-                <div class="space-y-4 font-bold uppercase text-[11px] px-2">
-                    <div class="flex justify-between border-b pb-2 font-black text-gold-primary"><span>Jack Daniel's</span> <span>14 €</span></div>
-                    <div class="flex justify-between border-b pb-2"><span>Digestifs</span> <span>10 €</span></div>
-                </div>
+            <!-- Bières Pression -->
+            <div class="sub-category-title">Bières Pression</div>
+            <div class="space-y-3 px-2">
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px]"><span>Demi Blonde</span> <span>4 €</span></div>
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px]"><span>Demi Ambrée</span> <span>4,50 €</span></div>
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px]"><span>Demi Blanche / IPA</span> <span>5 €</span></div>
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px] text-gold-primary"><span>Pinte Pression</span> <span>7 €</span></div>
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[10px] text-gray-400 italic"><span>Panaché</span> <span>4,05 €</span></div>
+            </div>
+
+            <!-- Bières Bouteille -->
+            <div class="sub-category-title">En Bouteille (33cl)</div>
+            <div class="grid grid-cols-2 gap-x-4 gap-y-2 px-2 text-[10px] font-bold uppercase">
+                <div class="flex justify-between border-b"><span>Bud</span> <span>5 €</span></div>
+                <div class="flex justify-between border-b"><span>Leffe Blonde</span> <span>5 €</span></div>
+                <div class="flex justify-between border-b"><span>Leffe Blanche</span> <span>5 €</span></div>
+                <div class="flex justify-between border-b"><span>1664</span> <span>5 €</span></div>
+                <div class="flex justify-between border-b"><span>Desperado</span> <span>5 €</span></div>
+                <div class="flex justify-between border-b text-gold-primary"><span>Chouffe</span> <span>7 €</span></div>
+            </div>
+
+            <!-- Spiritueux détaillés -->
+            <div class="sub-category-title">Digestifs & Spiritueux</div>
+            <div class="space-y-3 px-2 mb-6">
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px]"><span>Jack Daniel's</span> <span class="text-gold-primary">14 €</span></div>
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px]"><span>Whisky Gigi / Citadel / Gin</span> <span>12 €</span></div>
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px]"><span>Malibu / Rhum / Amaretto</span> <span>10 €</span></div>
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px]"><span>Chartreuse</span> <span>14 €</span></div>
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px] text-gray-400"><span>Bouteille Spirits (70cl)</span> <span>70 €</span></div>
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px] text-gray-400"><span>Bouteille Rhum (1L)</span> <span>100 €</span></div>
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px] text-gray-400"><span>Bouteille Diplomatico</span> <span>120 €</span></div>
+            </div>
+
+            <!-- Softs & Cafés -->
+            <div class="sub-category-title">Softs & Cafés</div>
+            <div class="space-y-3 px-2">
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px]"><span>Coca-Cola / Zéro</span> <span>4 €</span></div>
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px]"><span>Red Bull</span> <span>5 €</span></div>
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px]"><span>San Pel 1L / 50cl</span> <span>6€/4€</span></div>
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px]"><span>Expresso / Allongé</span> <span>1,50 €</span></div>
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px]"><span>Cappuccino / Noisette</span> <span>3€/1.8€</span></div>
             </div>
         </section>
 
         <!-- SECTION VINS -->
         <section id="content-vins" class="tab-content hidden animate-in fade-in duration-300">
-            <div class="mb-14">
-                <div class="text-center"><h2 class="section-title">Au Verre</h2></div>
-                <div class="space-y-5 font-black uppercase text-[12px] px-2">
-                    <div class="flex justify-between border-b pb-3"><span>Blanc / Rosé</span> <span>5 €</span></div>
-                    <div class="flex justify-between border-b pb-3 text-gold-primary"><span>Sélection Rouge</span> <span>6 €</span></div>
+            <div class="section-header"><h2 class="section-title">Vins & Pots</h2></div>
+            <div class="space-y-4 px-2">
+                <div class="flex justify-between border-b pb-2 font-black uppercase text-[12px]"><span>Verre de blanc / rosé</span> <span>5 €</span></div>
+                <div class="flex justify-between border-b pb-2 font-black uppercase text-[12px]"><span>Verre côte rouge</span> <span>4 €</span></div>
+                <div class="flex justify-between border-b pb-2 font-black uppercase text-[12px] text-gold-primary"><span>Sélection Rouge</span> <span>6 €</span></div>
+                
+                <div class="pt-4 space-y-3">
+                    <div class="flex justify-between text-[11px] font-bold uppercase opacity-80"><span>Pot Blanc Vieux</span> <span>12 €</span></div>
+                    <div class="flex justify-between text-[11px] font-bold uppercase opacity-80"><span>Pot Rosé</span> <span>10 €</span></div>
+                    <div class="flex justify-between text-[11px] font-bold uppercase opacity-80"><span>Pot Rouge CdR</span> <span>10 €</span></div>
+                    <div class="flex justify-between text-[11px] font-bold uppercase opacity-80"><span>Pot Rouge Saint-Joseph</span> <span>13 €</span></div>
+                    <div class="flex justify-between text-[11px] font-bold uppercase text-gold-primary"><span>Pot Rouge Cros</span> <span>13 €</span></div>
                 </div>
             </div>
 
-            <div class="mb-10">
-                <div class="text-center"><h2 class="section-title">Prestige</h2></div>
-                <div class="p-8 border-2 border-gold-primary bg-white shadow-xl rounded-2xl text-center">
-                    <div class="text-[10px] uppercase font-black tracking-widest text-gold-primary mb-2 opacity-70">Champagne</div>
+            <div class="section-header"><h2 class="section-title">Champagnes</h2></div>
+            <div class="space-y-4 px-2">
+                <div class="flex justify-between border-b pb-2 font-black uppercase text-[12px]"><span>Coupe de champagne</span> <span>10 €</span></div>
+                <div class="flex justify-between border-b pb-2 font-black uppercase text-[12px]"><span>Bouteille Champagne</span> <span>95 €</span></div>
+                <div class="p-8 border-4 border-gold-primary bg-white shadow-xl rounded-2xl text-center mt-6">
+                    <div class="text-[10px] uppercase font-black tracking-widest text-gold-primary mb-2 opacity-70">Prestige</div>
                     <h4 class="font-black uppercase text-base mb-4 leading-tight">Laurent-Perrier Rosé</h4>
                     <div class="text-2xl font-black text-gold-primary">120 €</div>
                 </div>
+            </div>
+            
+            <div class="section-header mt-10"><h2 class="section-title">Bouteilles</h2></div>
+            <div class="space-y-3 px-2 pb-10">
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px]"><span>Rosé gris blanc</span> <span>19,90 €</span></div>
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px]"><span>Rouge Champignons</span> <span>26 €</span></div>
+                <div class="flex justify-between border-b pb-1 font-bold uppercase text-[11px]"><span>Prosecco</span> <span>49 €</span></div>
             </div>
         </section>
     </main>
@@ -330,15 +456,13 @@
     <div id="qr-modal" onclick="closeQRCode()">
         <div id="qr-container" onclick="event.stopPropagation()">
             <h3 class="font-black uppercase text-base mb-2 text-gold-primary">MENU QR CODE</h3>
-            <p class="text-[9px] text-gray-500 font-bold mb-6 uppercase tracking-widest leading-relaxed">
-                Scannez pour accéder au menu
-            </p>
+            <p class="text-[9px] text-gray-500 font-bold mb-6 uppercase tracking-widest leading-relaxed">Scannez pour accéder au menu</p>
             <div id="qrcode"></div>
             <p class="mt-6 text-[9px] text-gray-300 uppercase font-black">Appuyez pour fermer</p>
         </div>
     </div>
 
-    <!-- Bouton Retour Haut Mobile -->
+    <!-- Bouton Retour Haut -->
     <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="fixed bottom-5 right-5 w-11 h-11 bg-gold-primary text-white rounded-full shadow-lg flex items-center justify-center z-40 active:scale-90 transition-transform">
         <i data-lucide="chevron-up" class="w-6 h-6"></i>
     </button>
@@ -346,7 +470,6 @@
     <script>
         lucide.createIcons();
 
-        // Affichage admin si ?admin=true
         window.onload = function() {
             const params = new URLSearchParams(window.location.search);
             if(params.get('admin') === 'true') {
@@ -360,8 +483,6 @@
             document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
             document.getElementById('content-' + tabId).classList.remove('hidden');
             document.getElementById('tab-' + tabId).classList.add('active');
-            
-            // Scroll au début du menu après le header
             window.scrollTo({ top: document.querySelector('nav').offsetTop - 10, behavior: 'smooth' });
         }
 
@@ -369,10 +490,7 @@
             const modal = document.getElementById('qr-modal');
             const qrDiv = document.getElementById('qrcode');
             qrDiv.innerHTML = "";
-            
-            // Lien vers la version client pure
             const currentUrl = window.location.href.split('?')[0];
-            
             new QRCode(qrDiv, {
                 text: currentUrl,
                 width: 220,
